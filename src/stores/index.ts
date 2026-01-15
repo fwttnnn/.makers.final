@@ -5,5 +5,5 @@ const reducer = combineReducers({
   tickets: ticketsReducer,
 })
 
-export type State = ReturnType<typeof reducer>
+export type Root = ReturnType<typeof reducer>
 export const store = createStore(reducer)
