@@ -1,1 +1,10 @@
+html, body {
+  /* background-color: black; */
+  /* color: white; */
+}
 
+body {
+  max-width: 640px;
+  padding: 0 15px;
+  margin: 30px auto;
+}

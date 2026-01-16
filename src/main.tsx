@@ -2,14 +2,12 @@ import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { store } from "@/stores"
 import { Provider as ReduxProvider } from "react-redux"
+import { ThemeProvider } from "@mui/material/styles"
+import { theme } from "@/theme"
 
 import "@/main.css"
 
 import Layout from "@/layouts"
-
-const Redux = {
-  Provider: ReduxProvider
-}
 
 /**
  * NOTE: redux (barebone) request dari mas Hendro
@@ -18,8 +16,10 @@ const Redux = {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Redux.Provider store={store}>
-      <Layout.Default />
-    </Redux.Provider>
+    <ReduxProvider store={store}>
+      <ThemeProvider theme={theme}>
+          <Layout.Default />
+      </ThemeProvider>
+    </ReduxProvider>
   </StrictMode>,
 )

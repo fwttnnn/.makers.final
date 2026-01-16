@@ -1,7 +1,9 @@
 import { INCREMENT, DECREMENT } from "@/stores/tickets/actions"
+import { days } from "@/utils/date"
 
 const initialState = {
   count: 0,
+  entryFees: Object.fromEntries(days.map((d) => [d, 0])),
 }
 
 export type State = typeof initialState
