@@ -1,10 +1,20 @@
-export const INCREMENT = "INCREMENT"
-export const DECREMENT = "DECREMENT"
+import type { Ticket } from "@/stores/tickets/type"
 
-export const increment = () => ({
-  type: INCREMENT,
+export const ADD = "ADD"
+export const DEL = "DEL"
+
+export const add = (date: string, ticket: Ticket) => ({
+  type: ADD,
+  payload: {
+    date,
+    ticket,
+  },
 })
 
-export const decrement = () => ({
-  type: DECREMENT,
+export const del = (date: string, movieId: string) => ({
+  type: DEL,
+  payload: {
+    date,
+    movieId
+  }
 })

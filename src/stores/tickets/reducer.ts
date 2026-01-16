@@ -1,20 +1,72 @@
-import { INCREMENT, DECREMENT } from "@/stores/tickets/actions"
-import { days } from "@/utils/date"
+import { ADD, DEL } from "@/stores/tickets/actions"
+import type { Ticket } from "@/stores/tickets/type"
 
-const initialState = {
-  count: 0,
-  entryFees: Object.fromEntries(days.map((d) => [d, 0])),
+export type State = {
+  values: Record<string, Array<Ticket>>
 }
 
-export type State = typeof initialState
+type AddAction = {
+  type: typeof ADD
+  payload: {
+    date: string
+    ticket: Ticket
+  }
+}
 
-export default (state: State = initialState, action: { type: string }): State => {
+type DelAction = {
+  type: typeof DEL
+  payload: {
+    date: string
+    movieId: string
+  }
+}
+
+type Action = AddAction | DelAction
+
+const initialState = {
+  values: {},
+}
+
+export default (state: State = initialState, action: Action): State => {
   switch (action.type) {
-    case INCREMENT:
-      return { ...state, count: state.count + 1 }
+    case ADD: {
+      const { date, ticket } = action.payload
 
-    case DECREMENT:
-      return { ...state, count: state.count - 1 }
+      if (!date)
+        return state
+
+      if (ticket.price < 10000)
+        return state
+
+      if (ticket.total < 1)
+        return state
+
+      if (!ticket.movie.title || !ticket.movie.id)
+        return state
+
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [date]: [
+            ...(state.values[date] ?? []),
+            ticket,
+          ],
+        }
+      }
+    }
+
+    case DEL: {
+      const { date, movieId } = action.payload
+
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [date]: state.values[date]?.filter((t) => t.movie.id !== movieId) ?? [],
+        },
+      }
+    }
 
     default:
       return state

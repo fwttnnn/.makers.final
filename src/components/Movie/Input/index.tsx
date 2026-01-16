@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import type { Root } from "@/stores"
-import type { State as Ticket } from "@/stores/tickets/reducer"
-import { increment, decrement } from "@/stores/tickets/actions"
+import { useDispatch } from "react-redux"
+import { add } from "@/stores/tickets/actions"
 
 import Stack from "@mui/material/Stack"
 import Button from "@mui/material/Button"
@@ -16,10 +14,11 @@ import CardMedia from "@mui/material/CardMedia"
 
 import services from "@/services"
 import placeholder from "@/data/movie"
+import { dayCategory } from "@/utils/date"
+import type { Day } from "@/utils/date"
 
 export default () => {
   const dispatch = useDispatch()
-  const ticket: Ticket = useSelector((r: Root) => r.tickets)
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [query, setQuery] = useState<string>("")
@@ -39,10 +38,38 @@ export default () => {
   }, [query])
 
   return (
-    <form onSubmit={(e: React.FormEvent) => {
+    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-
       if (!selectedId) return
+
+      const form = e.currentTarget
+      const formData = new FormData(form)
+
+      const date = formData.get("date") as string
+      const ticketTotal = Number(formData.get("total"))
+
+      const day = new Date(date).toLocaleDateString("en-US", { weekday: "long" })
+
+      const movie = data.Search.find((m) => m.imdbID === selectedId)
+      if (!movie) return
+
+      const prices = {
+        "weekdays": Number(formData.get("weekday")),
+        "weekends": Number(formData.get("weekend")),
+        "sunday": Number(formData.get("sunday")),
+      }
+
+      const category = dayCategory(day as Day)
+      if (!category) return
+
+      dispatch(add(date, {
+        total: ticketTotal,
+        price: prices[category],
+        movie: {
+          title: movie.Title,
+          id: movie.imdbID,
+        },
+      }))
     }}>
       <Stack spacing={2}>
         <TextField
