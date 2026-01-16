@@ -28,16 +28,6 @@ export default function History() {
 
         const formatIDR = (value: number) =>
           new Intl.NumberFormat("id-ID").format(value)
-      
-        /**
-         * NOTE: must have at least one ticket on the list.
-         */
-        if (!values.length) {
-          return (
-            <>
-            </>
-          )
-        }
 
         return (
           <Card key={d} variant="outlined">
@@ -50,7 +40,7 @@ export default function History() {
                   color="text.secondary"
                   sx={{ ml: 1 }}
                 >
-                  {date.toLocaleDateString("en-GB", { weekday: "long" })} (Rp. {formatIDR(values[0].price)} / Ticket)
+                  ({date.toLocaleDateString("en-GB", { weekday: "long" })})
                 </Typography>
               </Typography>
 
