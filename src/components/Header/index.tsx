@@ -6,7 +6,12 @@ export default () => {
   return (
     <AppBar position="static">
       <Toolbar sx={{ justifyContent: "center", margin: "20px 0px" }}>
-        <Typography variant="h5">
+        <Typography
+          variant="h5"
+          sx={{
+            letterSpacing: "-0.05em",
+          }}
+        >
           Movie Ticket Manager
         </Typography>
       </Toolbar>
