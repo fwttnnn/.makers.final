@@ -6,4 +6,8 @@ const reducer = combineReducers({
 })
 
 export type Root = ReturnType<typeof reducer>
-export const store = createStore(reducer)
+export const store = createStore(
+  reducer,
+  typeof window !== "undefined" &&
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__())
